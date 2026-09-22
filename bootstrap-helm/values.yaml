@@ -1,0 +1,36 @@
+argocd:
+  enabled: true
+  clusters:
+    region01:
+      enabled: true
+      helmValuesFile: values-region01.yaml
+      selector:
+        matchLabels:
+          type: "vks"     
+          env: "dev"
+          region: "region01"
+    region02:
+      enabled: false
+      helmValuesFile: values-region02.yaml
+      selector:
+        matchLabels:
+          type: "vks"     
+          env: "dev"
+          region: "region01"
+  applicationset:
+    bootstrap:
+      platform:
+        namespace: argocd-8xshq
+        project: default
+        git:
+          repoURL: https://github.com/amayacitta/vcf-argocd.git
+          path: argocd/vks-platform/*
+          targetRevision: HEAD
+      apps:
+        namespace: argocd-8xshq
+        project: default
+        git:
+          repoURL: https://github.com/amayacitta/vcf-argocd.git
+          path: argocd/vks-apps/*
+          targetRevision: HEAD
+
