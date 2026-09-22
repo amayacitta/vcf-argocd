@@ -24,13 +24,13 @@ argocd:
         project: default
         git:
           repoURL: https://github.com/amayacitta/vcf-argocd.git
-          path: argocd/vks-platform/*
+          path: vks-platform/*
           targetRevision: HEAD
       apps:
         namespace: argocd-8xshq
         project: default
         git:
           repoURL: https://github.com/amayacitta/vcf-argocd.git
-          path: argocd/vks-apps/*
+          path: vks-apps/*
           targetRevision: HEAD
 

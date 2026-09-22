@@ -22,7 +22,7 @@ spec:
 {{ end }}             
   template:      
     metadata:
-      name: {{ printf "{{ (split \":\" .name)._0 }}-{{index .path.segments 2}}" | quote }}
+      name: {{ printf "{{ (split \":\" .name)._0 }}-{{index .path.segments 1}}" | quote }}
     spec:
       project: {{ .Values.argocd.applicationset.bootstrap.platform.project }}
       source:
@@ -32,16 +32,13 @@ spec:
         helm:
           valueFiles:
             - {{ .Values.argocd.clusters.region01.helmValuesFile }}
-          releaseName: {{ printf "{{index .path.segments 2}}" | quote }}
+          releaseName: {{ printf "{{index .path.segments 1}}" | quote }}
       destination:
         server: {{ printf "{{.server}}" | quote }}
-        namespace: {{ printf "{{index .path.segments 2}}" | quote }}
+        namespace: {{ printf "{{index .path.segments 1}}" | quote }}
       syncPolicy:
         syncOptions:
-        - CreateNamespace=true
-        managedNamespaceMetadata:
-          annotations:
-            openshift.io/cluster-monitoring: "true"
+        - CreateNamespace=false
         automated: 
           prune: true
           selfHeal: true
