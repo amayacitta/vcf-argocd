@@ -1,0 +1,54 @@
+{{- if and .Values.argocd.enabled .Values.argocd.clusters.region01.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ocp-bootstrap-platform
+  namespace: {{ .Values.argocd.applicationset.bootstrap.platform.namespace }}
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - matrix:
+      generators:
+        - git:
+            repoURL: {{ .Values.argocd.applicationset.bootstrap.platform.git.repoURL }}
+            revision: {{ .Values.argocd.applicationset.bootstrap.platform.git.targetRevision }}
+            directories:
+            - path: {{ .Values.argocd.applicationset.bootstrap.platform.git.path }}
+        - clusters:    
+{{- with .Values.argocd.clusters.region01.selector }} 
+            selector:
+{{ toYaml . | indent 14 -}}
+{{ end }}             
+  template:      
+    metadata:
+      name: {{ printf "{{ (split \":\" .name)._0 }}-{{index .path.segments 2}}" | quote }}
+    spec:
+      project: {{ .Values.argocd.applicationset.bootstrap.platform.project }}
+      source:
+        repoURL: {{ .Values.argocd.applicationset.bootstrap.platform.git.repoURL }}
+        targetRevision: {{ .Values.argocd.applicationset.bootstrap.platform.git.targetRevision }}
+        path: {{ printf "{{.path.path}}" | quote }}
+        helm:
+          valueFiles:
+            - {{ .Values.argocd.clusters.region01.helmValuesFile }}
+          releaseName: {{ printf "{{index .path.segments 2}}" | quote }}
+      destination:
+        server: {{ printf "{{.server}}" | quote }}
+        namespace: {{ printf "{{index .path.segments 2}}" | quote }}
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+        managedNamespaceMetadata:
+          annotations:
+            openshift.io/cluster-monitoring: "true"
+        automated: 
+          prune: true
+          selfHeal: true
+        retry:
+          limit: 5 
+          backoff:
+            duration: 5s 
+            factor: 2 
+            maxDuration: 3m 
+{{ end -}}
