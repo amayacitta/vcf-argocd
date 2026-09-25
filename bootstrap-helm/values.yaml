@@ -1,6 +1,8 @@
 argocd:
+  # gloabl enable/disable flag this helm chart
   enabled: true
   clusters:
+    # flags for appsets in region01
     region01:
       enabled: true
       helmValuesFile: values-region01.yaml
@@ -9,35 +11,35 @@ argocd:
           type: "vks"     
           env: "dev"
           region: "region01"
-    region02:
-      enabled: false
-      helmValuesFile: values-region02.yaml
-      selector:
-        matchLabels:
-          type: "vks"     
-          env: "dev"
-          region: "region01"
+
+  # application set flags
   applicationset:
     bootstrap:
       clusters:
-        namespace: argocd-8xshq
+        namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
           repoURL: https://github.com/amayacitta/vcf-argocd.git
           path: vks-clusters/*
           targetRevision: HEAD
       platform:
-        namespace: argocd-8xshq
+        namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
           repoURL: https://github.com/amayacitta/vcf-argocd.git
           path: vks-platform/*
           targetRevision: HEAD
       apps:
-        namespace: argocd-8xshq
+        namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
           repoURL: https://github.com/amayacitta/vcf-argocd.git
           path: vks-apps/*
           targetRevision: HEAD
-
+      addons:
+        namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
+        project: default
+        git:
+          repoURL: https://github.com/amayacitta/vcf-argocd.git
+          path: vks-addons/*
+          targetRevision: HEAD

@@ -1,0 +1,21 @@
+apiVersion: infrastructure.cci.vmware.com/v1alpha3
+kind: SupervisorNamespace
+metadata:
+  generateName: vks-clusters
+  namespace: default-project
+spec:
+  classConfigOverrides:
+    storageClasses:
+    - limit: 100000Mi
+      name: home-m01-cl01-optimal-datastore-default-policy-autoraid
+    zones:
+    - cpuLimit: 10000M
+      cpuReservation: 0M
+      memoryLimit: 10000Mi
+      memoryReservation: 0Mi
+      name: domain-c9
+  className: small
+  description: "VKS Cluster Provisioning"
+  regionName: home
+  segName: aclab-se-group
+  vpcName: default-home
