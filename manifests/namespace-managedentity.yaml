@@ -1,0 +1,11 @@
+apiVersion: argocd-service.vsphere.vmware.com/v1alpha1
+  kind: ManagedEntity
+  metadata:
+    name: vks-clusters-mfm9f-default-project
+    namespace: argocd-8xshq
+  spec:
+    targetRef:
+      apiGroup: ""
+      kind: Namespace
+      name: vks-clusters-mfm9f
+      project: default-project
