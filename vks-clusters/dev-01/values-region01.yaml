@@ -1,3 +1,25 @@
 # needs filling out so the chart is more flexible
 chart:
   enabled: true
+
+cluster:
+  name: dev-01
+  namespace: vks-clusters-mfm9f       # must match the namespace within vcf-a 
+  classRef:
+    name: builtin-generic-v3.7.0
+  vkr: v1.36.2---vmware.2-vkr.3
+  vmClass: best-effort-xsmall
+  storageClass: home-m01-cl01-optimal-datastore-default-policy-autoraid
+  controlPlane:
+    replicas: 1
+    metadata:
+      annotations:
+        run.tanzu.vmware.com/resolve-os-image: os-name=photon
+  workers:
+    machineDeployments:
+      - class: node-pool
+        name: nodepool-01
+        replicas: 1
+        metadata:
+          annotations:
+            run.tanzu.vmware.com/resolve-os-image: os-name=photon

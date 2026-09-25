@@ -2,8 +2,11 @@
 apiVersion: cluster.x-k8s.io/v1beta2
 kind: Cluster
 metadata:
-  name: dev-01
-  namespace: vks-clusters-mfm9f
+  name: {{ .Values.cluster.name }}
+  namespace: {{ .Values.cluster.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+    #argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   clusterNetwork:
     pods:
@@ -15,25 +18,21 @@ spec:
     serviceDomain: cluster.local
   topology:
     classRef:
-      name: builtin-generic-v3.7.0
+      name: {{ .Values.cluster.classRef.name }}
       namespace: vmware-system-vks-public
-    version: v1.36.2---vmware.2-vkr.3
+    version: {{ .Values.cluster.vkr }}
     variables:
       - name: vmClass
-        value: best-effort-xsmall
+        value: {{ .Values.cluster.vmClass }}
       - name: storageClass
-        value: home-m01-cl01-optimal-datastore-default-policy-autoraid
+        value: {{ .Values.cluster.storageClass }}
     controlPlane:
-      replicas: 1
-      metadata:
-        annotations:
-          run.tanzu.vmware.com/resolve-os-image: os-name=photon
+{{- with .Values.cluster.controlPlane }} 
+{{ toYaml . | indent 6 -}}
+{{ end }}  
     workers:
       machineDeployments:
-        - class: node-pool
-          name: nodepool-01
-          replicas: 1
-          metadata:
-            annotations:
-              run.tanzu.vmware.com/resolve-os-image: os-name=photon
+{{- with .Values.cluster.workers.machineDeployments }} 
+{{ toYaml . | indent 6 -}}
+{{ end }}  
 {{ end -}}
