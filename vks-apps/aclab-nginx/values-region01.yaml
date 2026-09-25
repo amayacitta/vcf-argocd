@@ -114,7 +114,7 @@ aclab-nginx:
   # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
   service:
     # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-    type: ClusterIP
+    type: LoadBalancer
     # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
     port: 443
 
@@ -134,13 +134,13 @@ aclab-nginx:
   # This block is for HostRule configurations used to create aliases for additional hostnames
   # Allows multiple hostnames to attach to a single ingress 
   HostRule:
-    enabled: true
+    enabled: false
     # specify the waf policy to be used, if not set will default to System-WAF-Policy
     wafPolicy: {}
 
   # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
   ingress:
-    enabled: true
+    enabled: false
     className: "avi-lb"
     annotations: {}
       # passthrough.ako.vmware.com/enabled: "true"

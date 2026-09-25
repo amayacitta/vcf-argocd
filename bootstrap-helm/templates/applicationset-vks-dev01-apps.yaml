@@ -1,0 +1,51 @@
+{{- if and .Values.argocd.enabled .Values.argocd.clusters.vks-dev-01.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: vks-apps
+  namespace: {{ .Values.argocd.applicationset.bootstrap.apps.namespace }}
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - matrix:
+      generators:
+        - git:
+            repoURL: {{ .Values.argocd.applicationset.bootstrap.apps.git.repoURL }}
+            revision: {{ .Values.argocd.applicationset.bootstrap.apps.git.targetRevision }}
+            directories:
+            - path: {{ .Values.argocd.applicationset.bootstrap.apps.git.path }}
+        - clusters:    
+{{- with .Values.argocd.clusters.vks-dev-01.selector }} 
+            selector:
+{{ toYaml . | indent 14 -}}
+{{ end }}             
+  template:      
+    metadata:
+      name: '{{ printf "{{ base (dir .path.path) }}-{{ base .path.path }}" }}'
+    spec:
+      project: {{ .Values.argocd.applicationset.bootstrap.apps.project }}
+      source:
+        repoURL: {{ .Values.argocd.applicationset.bootstrap.apps.git.repoURL }}
+        targetRevision: {{ .Values.argocd.applicationset.bootstrap.apps.git.targetRevision }}
+        path: {{ printf "{{.path.path}}" | quote }}
+        helm:
+          valueFiles:
+            - {{ .Values.argocd.clusters.vks-dev-01.helmValuesFile }}
+          releaseName: '{{ printf "{{ base (dir .path.path) }}" }}'
+      destination:
+        server: {{ printf "{{.server}}" | quote }}
+        namespace: '{{ printf "{{ base (dir .path.path) }}" }}'
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+        automated: 
+          prune: true
+          selfHeal: true
+        retry:
+          limit: 5 
+          backoff:
+            duration: 5s 
+            factor: 2 
+            maxDuration: 3m 
+{{ end -}}
