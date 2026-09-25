@@ -3,7 +3,7 @@ apiVersion: cluster.x-k8s.io/v1beta2
 kind: Cluster
 metadata:
   name: dev-01
-  namespace: vks-clusters-w33y7
+  namespace: vks-clusters-mfm9f
 spec:
   clusterNetwork:
     pods:
