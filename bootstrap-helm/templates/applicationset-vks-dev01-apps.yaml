@@ -1,4 +1,4 @@
-{{- if and .Values.argocd.enabled .Values.argocd.clusters.vks-dev-01.enabled }}
+{{- if and .Values.argocd.enabled .Values.argocd.clusters.vksdev01.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -16,7 +16,7 @@ spec:
             directories:
             - path: {{ .Values.argocd.applicationset.bootstrap.apps.git.path }}
         - clusters:    
-{{- with .Values.argocd.clusters.vks-dev-01.selector }} 
+{{- with .Values.argocd.clusters.vksdev01.selector }} 
             selector:
 {{ toYaml . | indent 14 -}}
 {{ end }}             
@@ -31,7 +31,7 @@ spec:
         path: {{ printf "{{.path.path}}" | quote }}
         helm:
           valueFiles:
-            - {{ .Values.argocd.clusters.vks-dev-01.helmValuesFile }}
+            - {{ .Values.argocd.clusters.vksdev01.helmValuesFile }}
           releaseName: '{{ printf "{{ base (dir .path.path) }}" }}'
       destination:
         server: {{ printf "{{.server}}" | quote }}

@@ -12,14 +12,14 @@ argocd:
           env: "dev"
           region: "region01"
 
-    vks-dev-01:
+    vksdev01:
       enabled: true
       helmValuesFile: values-region01.yaml
       selector:
         matchLabels:
           type: "vks"     
           env: "dev"
-          name: "dev-01"
+          name: "dev01"
           region: "region01"
 
   # application set flags
