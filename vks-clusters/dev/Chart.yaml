@@ -1,5 +1,5 @@
 apiVersion: v2
-name: vks-clusters
+name: vks-dev-clusters
 description: A Helm chart for vks cluster deployments through argocd on vcf-a
 
 # A chart can be either an 'application' or a 'library' chart.

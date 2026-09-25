@@ -2,8 +2,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: ocp-bootstrap-platform
-  namespace: {{ .Values.argocd.applicationset.bootstrap.platform.namespace }}
+  name: vks-bootstrap-clusters
+  namespace: {{ .Values.argocd.applicationset.bootstrap.clusters.namespace }}
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -11,10 +11,10 @@ spec:
   - matrix:
       generators:
         - git:
-            repoURL: {{ .Values.argocd.applicationset.bootstrap.platform.git.repoURL }}
-            revision: {{ .Values.argocd.applicationset.bootstrap.platform.git.targetRevision }}
+            repoURL: {{ .Values.argocd.applicationset.bootstrap.clusters.git.repoURL }}
+            revision: {{ .Values.argocd.applicationset.bootstrap.clusters.git.targetRevision }}
             directories:
-            - path: {{ .Values.argocd.applicationset.bootstrap.platform.git.path }}
+            - path: {{ .Values.argocd.applicationset.bootstrap.clusters.git.path }}
         - clusters:    
 {{- with .Values.argocd.clusters.region01.selector }} 
             selector:
@@ -22,20 +22,20 @@ spec:
 {{ end }}             
   template:      
     metadata:
-      name: {{ printf "{{ (split \":\" .name)._0 }}-{{index .path.segments 1}}" | quote }}
+      name: '{{ printf "{{ base (dir .path.path) }}-{{ base .path.path }}" }}'
     spec:
-      project: {{ .Values.argocd.applicationset.bootstrap.platform.project }}
+      project: {{ .Values.argocd.applicationset.bootstrap.clusters.project }}
       source:
-        repoURL: {{ .Values.argocd.applicationset.bootstrap.platform.git.repoURL }}
-        targetRevision: {{ .Values.argocd.applicationset.bootstrap.platform.git.targetRevision }}
+        repoURL: {{ .Values.argocd.applicationset.bootstrap.clusters.git.repoURL }}
+        targetRevision: {{ .Values.argocd.applicationset.bootstrap.clusters.git.targetRevision }}
         path: {{ printf "{{.path.path}}" | quote }}
         helm:
           valueFiles:
             - {{ .Values.argocd.clusters.region01.helmValuesFile }}
-          releaseName: {{ printf "{{index .path.segments 1}}" | quote }}
+          releaseName: '{{ printf "{{ base (dir .path.path) }}" }}'
       destination:
         server: {{ printf "{{.server}}" | quote }}
-        namespace: {{ printf "{{index .path.segments 1}}" | quote }}
+        namespace: '{{ printf "{{ base (dir .path.path) }}" }}'
       syncPolicy:
         syncOptions:
         - CreateNamespace=false

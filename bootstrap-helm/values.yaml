@@ -19,6 +19,13 @@ argocd:
           region: "region01"
   applicationset:
     bootstrap:
+      clusters:
+        namespace: argocd-8xshq
+        project: default
+        git:
+          repoURL: https://github.com/amayacitta/vcf-argocd.git
+          path: vks-clusters/*
+          targetRevision: HEAD
       platform:
         namespace: argocd-8xshq
         project: default
