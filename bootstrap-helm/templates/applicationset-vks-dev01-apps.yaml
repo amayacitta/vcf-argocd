@@ -22,7 +22,7 @@ spec:
 {{ end }}             
   template:      
     metadata:
-      name: '{{ printf "{{ base (dir .path.path) }}-{{ base .path.path }}" }}'
+      name: '{{ printf "vks-clusters-dev-01-{{ base .path.path }}" }}'
     spec:
       project: {{ .Values.argocd.applicationset.bootstrap.apps.project }}
       source:
@@ -32,7 +32,7 @@ spec:
         helm:
           valueFiles:
             - {{ .Values.argocd.clusters.region01.vksdev01.helmValuesFile }}
-          releaseName: '{{ printf "{{ base (dir .path.path) }}" }}'
+          releaseName: {{ printf "vks-cluster-dev-01-{{ base .path.path }}" }}'
       destination:
         server: {{ printf "{{.server}}" | quote }}
         namespace: '{{ printf "{{ base .path.path }}" }}'
