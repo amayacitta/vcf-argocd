@@ -6,7 +6,6 @@ metadata:
   namespace: {{ .Values.cluster.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-    #argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   clusterNetwork:
     pods:
@@ -26,6 +25,21 @@ spec:
         value: {{ .Values.cluster.vmClass }}
       - name: storageClass
         value: {{ .Values.cluster.storageClass }}
+      - name: vsphereOptions
+        value:
+          persistentVolumes:
+            defaultStorageClass: {{ .Values.cluster.storageClass }}
+      - name: volumes
+        value:
+          - name: containerd
+            mountPath: /var/lib/containerd
+            storageClass: {{ .Values.cluster.storageClass }}
+            capacity: 20Gi
+      - name: bootstrapAddons
+        value:
+          cniRef:
+            name: antrea
+            namespace: vmware-system-vks-public
     controlPlane:
 {{- with .Values.cluster.controlPlane }} 
 {{ toYaml . | indent 6 -}}

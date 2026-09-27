@@ -8,7 +8,7 @@ cluster:
   classRef:
     name: builtin-generic-v3.7.0
   vkr: v1.36.2---vmware.2-vkr.3
-  vmClass: best-effort-xsmall
+  vmClass: best-effort-small
   storageClass: home-m01-cl01-optimal-datastore-default-policy-autoraid
   controlPlane:
     replicas: 1
@@ -18,7 +18,7 @@ cluster:
   workers:
     machineDeployments:
       - class: node-pool
-        name: nodepool-01
+        name: np-01
         replicas: 1
         metadata:
           annotations:
