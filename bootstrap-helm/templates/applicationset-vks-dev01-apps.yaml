@@ -35,7 +35,7 @@ spec:
           releaseName: '{{ printf "{{ base (dir .path.path) }}" }}'
       destination:
         server: {{ printf "{{.server}}" | quote }}
-        namespace: '{{ printf "{{ base (dir .path.path) }}" }}'
+        namespace: '{{ printf "{{ base .path.path }}" }}'
       syncPolicy:
         syncOptions:
         - CreateNamespace=true
