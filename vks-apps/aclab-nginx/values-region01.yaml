@@ -39,7 +39,7 @@ aclab-nginx:
 
   # cluster issuer reference for certificate manager
   certmanager:
-    ClusterIssuer: tanzu-sub01-clusterissuer
+    ClusterIssuer: aclab-sub01-clusterissuer
 
   # Resource quota
   resourceQuota:
