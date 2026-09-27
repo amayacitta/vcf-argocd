@@ -14,7 +14,7 @@ argocd:
           region: "region01"
 
       vksdev01:
-        enabled: false
+        enabled: true
         helmValuesFile: values-region01.yaml
         selector:
           matchLabels:
