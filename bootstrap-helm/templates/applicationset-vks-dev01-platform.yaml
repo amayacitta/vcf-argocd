@@ -1,4 +1,4 @@
-{{- if and .Values.argocd.enabled .Values.argocd.clusters.region01.vksdev01.enabled }}
+{{- if and .Values.argocd.enabled .Values.argocd.applicationset.platform.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:

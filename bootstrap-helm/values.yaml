@@ -1,10 +1,10 @@
 argocd:
   # gloabl enable/disable flag this helm chart
   enabled: true
+
   clusters:
     # flags for appsets in region01
     region01:
-      enabled: true
       helmValuesFile: values-region01.yaml
       selector:
         matchLabels:
@@ -14,7 +14,6 @@ argocd:
           region: "region01"
 
       vksdev01:
-        enabled: true
         helmValuesFile: values-region01.yaml
         selector:
           matchLabels:
@@ -28,6 +27,7 @@ argocd:
   applicationset:
     bootstrap:
       clusters:
+        enable: true
         namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
@@ -35,6 +35,7 @@ argocd:
           path: vks-clusters/*
           targetRevision: HEAD
       platform:
+        enable: true
         namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
@@ -42,6 +43,7 @@ argocd:
           path: vks-platform/*
           targetRevision: HEAD
       apps:
+        enable: false
         namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
@@ -49,6 +51,7 @@ argocd:
           path: vks-apps/*
           targetRevision: HEAD
       addons:
+        enable: true
         namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
