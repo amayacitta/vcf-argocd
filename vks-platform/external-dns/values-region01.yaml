@@ -1,8 +1,5 @@
-vksclusters:
-  region01:
-    enabled: true
-  region02:
-    enabled: false
+chart:
+  enabled: true
 
 external-dns:
   provider:
