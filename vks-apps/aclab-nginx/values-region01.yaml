@@ -51,8 +51,8 @@ aclab-nginx:
     hard:
       requests:
         storage: "20Gi"
-        cpu: "2"
-        memory: "1Gi"
+        cpu: "0.25"
+        memory: "10Mi"
       limits:
         cpu: "10"
         memory: "10Gi"
@@ -114,14 +114,14 @@ aclab-nginx:
   # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
   service:
     # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-    type: LoadBalancer
+    type: ClusterIP
     # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
     port: 443
 
   # This block is for AVI AKO http rule enablement
   # To use this disable passthrough mode in the ingress annotations
   httpRule:
-    enabled: false
+    enabled: true
     # specify to control tls procotols and ciphers, the profile will need to be manually created on the AVI and referenced here
     # if none is specified the System-Standard profile on the AVI will be used
     tlsProfile: {}
@@ -134,13 +134,13 @@ aclab-nginx:
   # This block is for HostRule configurations used to create aliases for additional hostnames
   # Allows multiple hostnames to attach to a single ingress 
   HostRule:
-    enabled: false
+    enabled: true
     # specify the waf policy to be used, if not set will default to System-WAF-Policy
     wafPolicy: {}
 
   # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
   ingress:
-    enabled: false
+    enabled: true
     className: "avi-lb"
     annotations: {}
       # passthrough.ako.vmware.com/enabled: "true"
@@ -161,7 +161,7 @@ aclab-nginx:
   # (see: https://gateway-api.sigs.k8s.io/guides/)
   httpRoute:
     # HTTPRoute enabled.
-    enabled: false
+    enabled: true
     # common back end port
     backendPort: 443
     # HTTPRoute annotations.
