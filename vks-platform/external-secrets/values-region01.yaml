@@ -1,9 +1,6 @@
-## regional deployment flags
-vksclusters:
-  region01:
-    enabled: true
-  region02:
-    enabled: false
+## deployment flags
+chart:
+  enabled: true
 
 ## depenency chart values
 external-secrets:
