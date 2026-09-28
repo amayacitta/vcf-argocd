@@ -27,7 +27,7 @@ argocd:
   applicationset:
     bootstrap:
       clusters:
-        enable: true
+        enabled: true
         namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
@@ -35,7 +35,7 @@ argocd:
           path: vks-clusters/*
           targetRevision: HEAD
       platform:
-        enable: false
+        enabled: false
         namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
@@ -43,7 +43,7 @@ argocd:
           path: vks-platform/*
           targetRevision: HEAD
       apps:
-        enable: false
+        enabled: false
         namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
@@ -51,7 +51,7 @@ argocd:
           path: vks-apps/*
           targetRevision: HEAD
       addons:
-        enable: false
+        enabled: false
         namespace: argocd-8xshq   # must match the namespace where the argocd instance resides
         project: default
         git:
