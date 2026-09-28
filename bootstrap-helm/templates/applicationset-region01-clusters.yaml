@@ -1,4 +1,4 @@
-{{- if and .Values.argocd.enabled .Values.argocd.applicationset.clusters.enabled }}
+{{- if and .Values.argocd.enabled .Values.argocd.applicationset.bootstrap.clusters.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:

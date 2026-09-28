@@ -1,4 +1,4 @@
-{{- if and .Values.argocd.enabled .Values.argocd.applicationset.apps.enabled }}
+{{- if and .Values.argocd.enabled .Values.argocd.applicationset.bootstrap.apps.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
