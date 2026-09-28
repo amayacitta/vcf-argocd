@@ -161,7 +161,7 @@ aclab-nginx:
   # (see: https://gateway-api.sigs.k8s.io/guides/)
   httpRoute:
     # HTTPRoute enabled.
-    enabled: true
+    enabled: false
     # common back end port
     backendPort: 443
     # HTTPRoute annotations.
